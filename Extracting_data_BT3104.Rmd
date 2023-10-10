@@ -1,0 +1,32 @@
+---
+title: "Extracting_data_BT3104"
+output: pdf_document
+date: "2023-09-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r extraction}
+data <- read.table("card-1.csv",sep=",",skip=2,header=FALSE)
+header <- scan("card-1.csv",sep=",",nlines=2,what=character())
+set.seed(1234)
+n = length(data$V1)
+index <- 1:nrow(data)
+testindex <- sample(index, trunc(n)/4)
+test.data <- data[testindex,]
+train.data <- data[-testindex,]
+header <- header[26:50]
+colnames(test.data) <- header
+colnames(train.data) <- header
+write.csv(test.data, "test_data.csv")
+write.csv(train.data, "train_data.csv")
+```
+
